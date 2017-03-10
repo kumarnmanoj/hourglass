@@ -1,5 +1,10 @@
 # Hour Glass
 
+Requirements
+
+ - node v0.10.25
+ - npm
+
 Testing the code
 
 clone the repo and execute the following commands on the repo directory
