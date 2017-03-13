@@ -6,7 +6,6 @@ var sumOfHourGlass = function(array, start_row, start_column){
         return null;
     }
 
-
     var row = array[start_row];
 
     // start_column validity
@@ -21,17 +20,17 @@ var sumOfHourGlass = function(array, start_row, start_column){
     // converts the given array to the hour glass 
     // (0,0 of the hourglass is translated from start_row, start_column)
     // As per the specification, hourglass is a 3X3 matrix
-    var hourGlass = rows.map(function rowSplicer(_row, index){
+    var hourGlass = rows.map(function (_row, index){
         return _row.slice(start_column, start_column + 3);
     });
     
     var sum = -(hourGlass[1][0] + hourGlass[1][2]);
 
-    var flattenedHourGlass = hourGlass.reduce(function rowFlatten(acc, row){
+    var flattenedHourGlass = hourGlass.reduce(function (acc, row){
         return acc.concat(row);
     }, []);
 
-    var hourGlassSum = flattenedHourGlass.reduce(function adder(acc, value){
+    var hourGlassSum = flattenedHourGlass.reduce(function (acc, value){
         return acc + value;
     }, 0) + sum;
     
@@ -41,8 +40,8 @@ var sumOfHourGlass = function(array, start_row, start_column){
 var maxSumOfHourGlass = function(array){
     var sum = null;
 
-    array.forEach(function rowProcessor(row, rowIndex){
-        row.forEach(function columnProcessor(column, colIndex){
+    array.forEach(function (row, rowIndex){
+        row.forEach(function (column, colIndex){
             var _sum = sumOfHourGlass(array, rowIndex, colIndex);
             sum = ( _sum == null || (sum != null && _sum < sum )) ? sum : _sum;
         });
