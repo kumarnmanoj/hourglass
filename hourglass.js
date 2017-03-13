@@ -38,16 +38,24 @@ var sumOfHourGlass = function(array, start_row, start_column){
 }
 
 var maxSumOfHourGlass = function(array){
-    var sum = null;
 
-    array.forEach(function (row, rowIndex){
-        row.forEach(function (column, colIndex){
-            var _sum = sumOfHourGlass(array, rowIndex, colIndex);
-            sum = ( _sum == null || (sum != null && _sum < sum )) ? sum : _sum;
+    var hourGlassesSum = array.map(function (row, rowIndex) {
+        return row.map(function (column, colIndex){
+            return sumOfHourGlass(array, rowIndex, colIndex);
         });
+    })
+
+    var flattenedHourGlassesSum = hourGlassesSum.reduce(function (acc,row){
+        return acc.concat(row);
+    }, []).filter(function (value){
+        return value !== null;
+    })
+
+    var maxSum = (flattenedHourGlassesSum.length === 0) ? null : flattenedHourGlassesSum.reduce(function (sum1, sum2){
+        return (sum1 > sum2) ? sum1 : sum2;
     });
 
-    return sum;
+    return maxSum;
 }
 
 exports.sumOfHourGlass = sumOfHourGlass
