@@ -1,5 +1,4 @@
 var sumOfHourGlass = function(array, start_row, start_column){
-
     // start_row validity
     // start_row should be a positive number
     // start_row should be within the first to 3rd row from last.
@@ -8,7 +7,7 @@ var sumOfHourGlass = function(array, start_row, start_column){
     }
 
 
-    row = array[start_row];
+    var row = array[start_row];
 
     // start_column validity
     // start_column should be a positive number
@@ -17,36 +16,40 @@ var sumOfHourGlass = function(array, start_row, start_column){
         return null;
     }
 
+    var rows = array.slice(start_row, start_row + 3);
+
+    // converts the given array to the hour glass 
+    // (0,0 of the hourglass is translated from start_row, start_column)
+    // As per the specification, hourglass is a 3X3 matrix
+    var hourGlass = rows.map(function rowSplicer(_row, index){
+        return _row.slice(start_column, start_column + 3);
+    });
     
-    var sum = -(array[start_row+1][start_column] + array[start_row+1][start_column+2]);
+    var sum = -(hourGlass[1][0] + hourGlass[1][2]);
 
-    for ( var i = start_row; i <= start_row + 2; i++ ){
-        for ( var j = start_column; j <= start_column + 2; j++){
-            sum += array[i][j];
-        }
-    }
+    var flattenedHourGlass = hourGlass.reduce(function rowFlatten(acc, row){
+        return acc.concat(row);
+    }, []);
 
-    return sum;
+    var hourGlassSum = flattenedHourGlass.reduce(function adder(acc, value){
+        return acc + value;
+    }, 0) + sum;
+    
+    return hourGlassSum;
 }
 
 var maxSumOfHourGlass = function(array){
     var sum = null;
 
-    for (var i = 0 ; i < array.length; i++){
-        for (var j = 0; j < array.length; j++){
-            var _sum = sumOfHourGlass(array, i, j);
-            if ( _sum == null ){
-                continue;
-            }
-
-            if ( sum == null || sum < _sum ){
-                sum = _sum;
-            }
-        }
-    }
+    array.forEach(function rowProcessor(row, rowIndex){
+        row.forEach(function columnProcessor(column, colIndex){
+            var _sum = sumOfHourGlass(array, rowIndex, colIndex);
+            sum = ( _sum == null || (sum != null && _sum < sum )) ? sum : _sum;
+        });
+    });
 
     return sum;
 }
-exports.sumOfHourGlass = sumOfHourGlass
 
+exports.sumOfHourGlass = sumOfHourGlass
 exports.maxSumOfHourGlass = maxSumOfHourGlass
